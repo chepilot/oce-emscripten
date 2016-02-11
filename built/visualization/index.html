@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        body {
+            background-color: #222222;
+            margin: 0px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+
+    <script type="text/javascript" src="three.min.js"></script>
+    <script type="text/javascript" src="OrbitControls.js"></script>
+    <script type="text/javascript" src="stats.min.js"></script>
+
+
+    <script type="text/javascript" src="./data.js"></script>
+    <script type="text/javascript">
+        var camera, scene, renderer, object, stats, container, shape_material;
+        var targetRotation = 0;
+        var targetRotationOnMouseDown = 0;
+        var targetRotationY = 0;
+        var targetRotationYOnMouseDown = 0;
+        var mouseX = 0;
+        var mouseXOnMouseDown = 0;
+        var mouseY = 0;
+        var mouseYOnMouseDown = 0;
+        var moveForward = false;
+        var moveBackward = false;
+        var moveLeft = false;
+        var moveRight = false;
+        var moveUp = false;
+        var moveDown = false;
+        var windowHalfX = window.innerWidth / 2;
+        var windowHalfY = window.innerHeight / 2;
+        init();
+        animate();
+        function init() {
+            container = document.createElement( 'div' );
+            document.body.appendChild( container );
+            camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 200 );
+            camera.position.z = 100;
+            controls = new THREE.OrbitControls(camera );
+            scene = new THREE.Scene();
+            scene.add( new THREE.AmbientLight(0x101010));
+            directionalLight = new THREE.DirectionalLight( 0x000000 );
+            directionalLight.position.x = 1;
+            directionalLight.position.y = 1;
+            directionalLight.position.z = 2;
+            directionalLight.position.normalize();
+            scene.add( directionalLight );
+            light1 = new THREE.PointLight( 0x000000 );
+            scene.add( light1 );
+
+
+            phong_material = new THREE.MeshPhongMaterial( { ambient: 0x000000,
+                                                            color: 0xffaa00,
+                                                            specular: 0x555555,
+                                                            shininess: 30 });
+            var a = new THREE.MeshNormalMaterial({wireframe: true});
+            object = new THREE.Mesh( new Shape(), a);
+            object.overdraw = true;
+            object.rotation.x = -1.57/2;
+            scene.add( object );
+            renderer = new THREE.WebGLRenderer({antialias:true});
+            renderer.setClearColor("0x000000");
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            container.appendChild( renderer.domElement );
+            renderer.shadowMapEnabled = true;
+            renderer.shadowMapType = THREE.PCFShadowMap;
+            stats = new Stats();
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.top = '0px';
+            container.appendChild( stats.domElement );
+            window.addEventListener( 'resize', onWindowResize, false );
+        }
+        function animate() {
+                requestAnimationFrame( animate );
+                controls.update();
+                render();
+                stats.update();
+        }
+        function render() {
+               renderer.render( scene, camera );
+        }
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+        }
+    </script>
+</body>
+</html>

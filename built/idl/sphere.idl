@@ -1,0 +1,55 @@
+typedef double Standard_Real;
+typedef boolean Standard_Boolean;
+
+interface BRepPrimAPI_MakeSphere{
+	void BRepPrimAPI_MakeSphere([Const]Standard_Real R); 
+	void BRepPrimAPI_MakeSphere([Const]Standard_Real R,[Const]Standard_Real angle); 	
+	void BRepPrimAPI_MakeSphere([Const]Standard_Real R,[Const]Standard_Real angle1, [Const]Standard_Real angle2);
+	void BRepPrimAPI_MakeSphere([Const]Standard_Real R,[Const]Standard_Real angle1, [Const]Standard_Real angle2, [Const]Standard_Real angle3); 	 	
+	
+	// BRepPrim_Sphere should be a Ref or Value?
+	[Ref] BRepPrim_Sphere Sphere();
+};
+BRepPrimAPI_MakeSphere implements BRepPrimAPI_MakeOneAxis;
+
+interface BRepPrimAPI_MakeOneAxis{
+	// this is virtual
+	void Build();
+};
+BRepPrimAPI_MakeOneAxis implements BRepBuilderAPI_MakeShape;
+
+interface BRepBuilderAPI_MakeShape{
+	[Const, Ref] TopoDS_Shape Shape(); 
+};
+
+interface BRepPrim_Sphere{
+};
+
+interface TopoDS_Shape{
+};
+
+interface GProp_GProps{
+	// constant function 
+	void GProp_GProps();
+	Standard_Real Mass();
+};
+
+interface BRepGProp{
+	// Standard_False is created using #define macro
+	// this is static method / namespace
+	// value assignment in arguments
+	// void VolumeProperties ([Const,Ref] TopoDS_Shape S, [Ref] GProp_GProps VProps, [Const] Standard_Boolean OnlyClosed = Standard_False); 
+	void VolumeProperties ([Const,Ref] TopoDS_Shape S, [Ref] GProp_GProps VProps);
+};
+
+// tesselator for visualization
+interface Tesselator{
+	void Tesselator([Const,Ref] TopoDS_Shape aShape);
+	DOMString ExportShapeToThreejs();
+};
+
+// BRepMesh_IncrementalMesh.hxx
+interface BRepMesh_IncrementalMesh{
+	// constructor automatically call to perform meshing
+	void BRepMesh_IncrementalMesh([Const, Ref] TopoDS_Shape theShape, [Const] Standard_Real theLinDeflection);
+};
