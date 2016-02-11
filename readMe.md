@@ -20,8 +20,8 @@ A webIDL file allows to use oce functions/classes directly from javascript. The 
 Then run `make.py` to generate the javascript file, this script is modified based on the one from ammo.js.
 
 ### Testing
-built/idl/oce.js contains some functionalities of oce.
-Open oce.html and the js code below in the console:
+`demo/oce.js` contains some functionalities of oce.
+Open `oce.html` and use the js code below in the console:
 ```
 var sphere = new oce.BRepPrimAPI_MakeSphere(2);
 var prop = new oce.GProp_GProps();
