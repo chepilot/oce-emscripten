@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+
+    <script type="text/javascript" src="pace.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="pace.css">
+        
     <style type="text/css">
         body {
             background-color: #222222;
@@ -14,13 +18,24 @@
 <body>
     <div id="container"></div>
 
+    <script type="text/javascript" src='oce.js'></script>
     <script type="text/javascript" src="three.min.js"></script>
     <script type="text/javascript" src="OrbitControls.js"></script>
     <script type="text/javascript" src="stats.min.js"></script>
 
 
-    <script type="text/javascript" src="./data.js"></script>
     <script type="text/javascript">
+    	// oce.js calls
+        var sphere = new oce.BRepPrimAPI_MakeSphere(2);
+        var prop = new oce.GProp_GProps();
+        sphere.Build()
+        oce.BRepGProp.prototype.VolumeProperties(sphere.Shape(),prop)
+        //console.log(prop.Mass());
+        var tess = new oce.Tesselator(sphere.Shape())
+        var data = tess.ExportShapeToThreejs()
+        eval (data);
+
+        // three.js render
         var camera, scene, renderer, object, stats, container, shape_material;
         var targetRotation = 0;
         var targetRotationOnMouseDown = 0;
@@ -93,6 +108,7 @@
             camera.updateProjectionMatrix();
             renderer.setSize( window.innerWidth, window.innerHeight );
         }
+        console.log(window.performance.timing);
     </script>
 </body>
 </html>

@@ -20,15 +20,4 @@ A webIDL file allows to use oce functions/classes directly from javascript. The 
 Then run `make.py` to generate the javascript file, this script is modified based on the one from ammo.js.
 
 ### Testing
-`demo/oce.js` contains some functionalities of oce.
-Open `oce.html` and use the js code below in the console:
-```
-var sphere = new oce.BRepPrimAPI_MakeSphere(2);
-var prop = new oce.GProp_GProps();
-sphere.Build()
-oce.BRepGProp.prototype.VolumeProperties(sphere.Shape(),prop)
-prop.Mass()
-var tess = new oce.Tesselator(sphere.Shape())
-var data = tess.ExportShapeToThreejs()
-```
-variable data will contain the three.js compatible data.
+`demo/oce.HTML` contains some functionalities of oce. It will build a sphere and visualize it in browser.
