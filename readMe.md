@@ -20,4 +20,5 @@ A webIDL file allows to use oce functions/classes directly from javascript. The 
 Then run `make.py` to generate the javascript file, this script is modified based on the one from ammo.js.
 
 ### Testing
+See a simple live demo [here](https://chepilot.github.io/oce-emscripten)
 `demo/oce.HTML` contains some functionalities of oce. It will build a sphere and visualize it in browser.
