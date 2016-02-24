@@ -21,7 +21,11 @@ sys.path.append(EMSCRIPTEN_ROOT)
 import tools.shared as emscripten
 
 
-emcc_args = sys.argv[1:] or '-O3 --llvm-lto 1 -s DEMANGLE_SUPPORT=1 -s DISABLE_EXCEPTION_CATCHING=0 -s ASSERTIONS=1 -s LINKABLE=1 -s NO_EXIT_RUNTIME=1 -s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s NO_DYNAMIC_EXECUTION=1 --memory-init-file 0 -s NO_FILESYSTEM=0 -s NO_BROWSER=1 -s EXPORTED_RUNTIME_METHODS=[]'.split(' ')
+emcc_args = sys.argv[1:] or '-O3 --llvm-lto 1 -s DISABLE_EXCEPTION_CATCHING=0 -s ELIMINATE_DUPLICATE_FUNCTIONS=1 -s NO_EXIT_RUNTIME=1 -s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s NO_DYNAMIC_EXECUTION=1 --memory-init-file 0 -s NO_FILESYSTEM=1 -s NO_BROWSER=1 -s EXPORTED_RUNTIME_METHODS=[]'.split(' ')
+
+# emcc_args = sys.argv[1:] or '-O3 --llvm-lto 1 -s DEMANGLE_SUPPORT=1 -s DISABLE_EXCEPTION_CATCHING=0 -s LINKABLE=1 -s NO_EXIT_RUNTIME=1 -s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s NO_DYNAMIC_EXECUTION=1 --memory-init-file 0 -s NO_FILESYSTEM=1 -s NO_BROWSER=1 -s EXPORTED_RUNTIME_METHODS=[]'.split(' ')
+# ELIMINATE_DUPLICATE_FUNCTIONS=1
+# -s ASSERTIONS=2 for details in assertions
 
 emcc_args += ['-s', 'TOTAL_MEMORY=%d' % (256*1024*1024)]
 
@@ -46,7 +50,28 @@ args = ['-include../oce/inc/BRepPrimAPI_MakeSphere.hxx',
         '-include../oce/inc/GProp_GProps.hxx',
         '-include../oce/src/BRepMesh/BRepMesh_IncrementalMesh.hxx',
         '-include./Tesselator.h',
-       	#'-include../oce/src/StdPrs/StdPrs_ToolShadedShape.hxx',
+        '-include../oce/inc/BRepFilletAPI_LocalOperation.hxx',
+        '-include../oce/inc/GC_MakeArcOfCircle.hxx',
+        '-include../oce/inc/BRepBuilderAPI_MakeFace.hxx',
+        '-include../oce/inc/TopExp_Explorer.hxx',
+        '-include../oce/inc/GC_MakeSegment.hxx',
+        '-include../oce/inc/TopoDS.hxx',
+        '-include../oce/inc/BRepBuilderAPI_MakeEdge.hxx',
+        '-include../oce/inc/BRepPrimAPI_MakePrism.hxx',
+        '-include../oce/inc/BRepBuilderAPI_Transform.hxx',
+        '-include../oce/inc/BRepBuilderAPI_MakeWire.hxx',
+        '-include../oce/inc/BRepFilletAPI_MakeFillet.hxx',
+        '-include../oce/inc/BRepPrimAPI_MakeCylinder.hxx',
+        '-include../oce/inc/BRepAlgoAPI_Fuse.hxx',
+        '-include../oce/inc/gp_Lin.hxx',
+        '-include../oce/inc/gp_Circ.hxx',
+        '-include../oce/inc/gp_Elips.hxx',
+        '-include../oce/inc/gp_Hypr.hxx',
+        # '-include../oce/inc/',
+        # '-include../oce/inc/',
+        # '-include../oce/inc/',
+        # '-include../oce/inc/',
+
         '-I../oce/inc',
         '-I../oce/src/Standard',
         '-I../oce/src/TopoDS',
@@ -56,7 +81,14 @@ args = ['-include../oce/inc/BRepPrimAPI_MakeSphere.hxx',
         '-I../oce/src/gp',
         '-I../oce/src/Precision',
         '-I../oce/src/BrepPrim',
-        
+        '-I../oce/src/GC',
+        '-I../oce/src/TopExp',
+        '-I../oce/src/BRepSweep',
+        '-I../oce/src/Sweep',
+        '-I../oce/src/BRepTools',
+        '-I../oce/src/ChFiDS',
+		'-I../oce/src/math',
+
         '-I../oce/src/BRepMesh',
         '-I../oce/src/Bnd',
         '-I../oce/src/NCollection',
@@ -75,7 +107,6 @@ print
 
 oce_libs = [
 			# OCE MODEL
-#            '../binary/libgtest.a',
             '../binary/libTKBO.so',
             '../binary/libTKBool.so',
             '../binary/libTKBRep.so',
@@ -93,8 +124,6 @@ oce_libs = [
             '../binary/libTKPrim.so',
             '../binary/libTKShHealing.so',
             '../binary/libTKTopAlgo.so',
-            # 'Tesselator.cpp',
-            # 'my_glue_wrapper.cpp'
             #OCE TKV3D
             '../binary/libTKV3D.so',
             '../binary/libTKService.so'
